@@ -1,0 +1,7 @@
+package com.example.phuoclochotel.exception;
+
+public class ResourceNotFoundException extends Exception{
+	
+	
+
+}

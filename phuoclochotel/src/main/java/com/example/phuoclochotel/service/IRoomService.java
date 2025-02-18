@@ -9,6 +9,7 @@ import javax.sql.rowset.serial.SerialException;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.phuoclochotel.exception.ResourceNotFoundException;
 import com.example.phuoclochotel.model.Room;
 
 public interface IRoomService {
@@ -16,6 +17,10 @@ public interface IRoomService {
 	Room addNewRoom(MultipartFile photo, String roomType, BigDecimal roomPrice) throws IOException, SerialException, SQLException;
 
 	List<String> getAllRoomTypes();
+
+	List<Room> getAllRooms();
+
+	byte[] getRoomPhotoByRoomId(Long roomId) throws ResourceNotFoundException, SQLException;
 	
 
 	

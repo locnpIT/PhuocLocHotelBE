@@ -5,13 +5,16 @@ import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
 
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.phuoclochotel.exception.ResourceNotFoundException;
 import com.example.phuoclochotel.model.Room;
 import com.example.phuoclochotel.repository.RoomRepository;
 
@@ -43,6 +46,27 @@ public class RoomService implements IRoomService{
 	public List<String> getAllRoomTypes() {
 		
 		return roomRepository.findDistinctRoomType();
+	}
+
+	@Override
+	public List<Room> getAllRooms() {
+		
+		return roomRepository.findAll();
+	}
+
+	@Override
+	public byte[] getRoomPhotoByRoomId(Long roomId) throws ResourceNotFoundException, SQLException {
+		Optional<Room> theRoom = roomRepository.findById(roomId);
+		if(theRoom.isEmpty()) {
+			throw new ResourceNotFoundException("Sorry, room not found!");
+		}
+		Blob photoBlob = theRoom.get().getPhoto();
+		if(photoBlob != null) {
+			return photoBlob.getBytes(1, (int) photoBlob.length());
+			
+		}
+		
+		return null;
 	}
 	
 	
